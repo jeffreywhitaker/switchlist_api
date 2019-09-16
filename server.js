@@ -1,4 +1,4 @@
-import { initialState } from './data'
+const initialState = require('./data')
 
 const express = require('express')
 

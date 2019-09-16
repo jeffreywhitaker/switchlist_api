@@ -1,4 +1,4 @@
-export const initialState = {
+const state = {
     games: [
         {
             name: 'Super Mario Odyssey',
@@ -76,3 +76,5 @@ export const initialState = {
     isFetching: false,
     error: ''
 }
+
+module.exports = state
