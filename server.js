@@ -1,6 +1,5 @@
 const initialState = require('./data')
 const cors = require('cors')
-
 const express = require('express')
 
 const port = process.env.PORT || 5000
