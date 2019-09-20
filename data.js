@@ -66,15 +66,25 @@ const state = {
             ]
         },
     ],
-    user: [],
     publishers: [
         'Nintendo',
         'Motion Twin',
         'Activision',
         'Random Publisher',
-    ],
-    isFetching: false,
-    error: ''
+    ]
 }
 
-module.exports = state
+const users = [
+    {
+        id: 1,
+        name: 'Jeff',
+        password: 'jeff',
+    },
+    {
+        id: 2,
+        name: 'Katherine',
+        password: 'mimi'
+    }
+]
+
+module.exports = { state, users }
