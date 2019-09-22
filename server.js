@@ -27,8 +27,10 @@ function authenticator(req, res, next) {
 
 server.post('/login', (req, res) => {
     const { username, password } = req.body
+    // map through users and check password
+
+
     if (username === 'Jeff' && password === 'jeff') {
-        req.loggedIn = true
         res.status(200).json({
             payload: token
         })
@@ -41,40 +43,39 @@ server.post('/login', (req, res) => {
 
 // games API
 
-server.get('/gamelist', (req, res) => {
+server.get('/gamelist', authenticator, (req, res) => {
     res.status(200).json(data.state.games)
 })
 
 // users API
 
-server.get('/users/:id', (req, res) => {
-    res.status(200).json(data.users)
-})
-
 server.post('/users', (req, res) => {
-    if (req.body.name !== undefined) {
-        const newUser = req.body
-        newUser['id'] = userId
-        data.users.push(newUser)
+    if (!req.body.name) {
+        return res.status(400).send("There needs to be a name in the name field.")
     }
-    ++movieId
-    res.status(201).json(data.users)
+    if (data.users.find(user => {
+        return user.name === req.body.name
+    })) {
+        return res.status(400).send("There is already a user with this name. Please use another name.")
+    }
+    const newUser = req.body
+    newUser.id = userId
+    data.users.push(newUser)
+    ++userId
+    res.status(201).json(token)
 })
 
-server.put('/users/:id', (req, res) => {
+server.put('/users/:id', authenticator, (req, res) => { // add in authorization later
     if (!req.params.id)
-        res.status(400).send("Your request is missing the user id")
+        return res.status(400).send("Your request is missing the user id.")
     if (
-        req.body.id === undefined ||
         !req.body.name ||
         !req.body.password
     ) {
-        res
-            .status(422)
-            .send("Make sure your request body has all the fields it needs")
+        return res.status(422).send("Make sure your request body has all the fields it needs.")
     }
-    users = users.map(user => {
-        if (`${us.id}` === req.params.id) {
+    data.users = data.users.map(user => {
+        if (user.id === parseInt(req.params.id)) {
             return req.body
         }
         return user
@@ -82,11 +83,11 @@ server.put('/users/:id', (req, res) => {
     res.status(200).send(req.body)
 })
 
-server.delete('/users/:id', (req, res) => {
+server.delete('/users/:id', authenticator, (req, res) => {  // add in authorization later
     if (!req.params.id)
         res.status(400).send('Your request is missing the user id')
     data.users = data.users.filter(user => `${user.id}` !== req.params.id)
-    res.status(202).send(req.params.id)
+    res.status(202).send("User has been deleted.")
 })
 
 // server port
