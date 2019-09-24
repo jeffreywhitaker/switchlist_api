@@ -76,13 +76,15 @@ const publishers = [
 const users = [
     {
         id: 1,
-        name: 'Jeff',
+        username: 'Jeff',
+        firstName: 'Jeff',
         password: 'jeff',
         email: 'jeff@jeff.com'
     },
     {
         id: 2,
-        name: 'Katherine',
+        username: 'Katherine',
+        firstName: 'Katherine',
         password: 'mimi',
         email: ''
     }

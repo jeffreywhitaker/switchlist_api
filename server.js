@@ -35,7 +35,7 @@ server.post("/login", (req, res) => {
     return res.status(400).send("Please provide a username");
   }
   const findByUsername = data.users.find(user => {
-    return user.name === username;
+    return user.username === username;
   });
 
   const findByEmail = data.users.find(user => {
@@ -77,7 +77,7 @@ server.post("/users", (req, res) => {
   }
   if (
     data.users.find(user => {
-      return user.name === req.body.username;
+      return user.username === req.body.username;
     })
   ) {
     return res
