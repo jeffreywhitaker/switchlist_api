@@ -1,0 +1,260 @@
+{
+    "type": "database",
+    "name": "Switchlist",
+    "objects": [
+        {
+            "type": "table",
+            "database": null,
+            "name": "directors",
+            "withoutRowId": true,
+            "ddl": "CREATE TABLE directors (directorId PRIMARY KEY UNIQUE, name STRING UNIQUE)",
+            "columns": [
+                {
+                    "name": "directorId",
+                    "type": "",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY "
+                        },
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "STRING",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "Kenta Motokura"
+                ],
+                [
+                    2,
+                    "Yoann Laulan"
+                ],
+                [
+                    3,
+                    "Toshiyuki Kusakihara"
+                ],
+                [
+                    4,
+                    "Genki Yokota"
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "games",
+            "withoutRowId": true,
+            "ddl": "CREATE TABLE games (gameId INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, name STRING UNIQUE, releaseDate STRING, series STRING, caseImg STRING, publisher STRING)",
+            "columns": [
+                {
+                    "name": "gameId",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT "
+                        },
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "STRING",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "releaseDate",
+                    "type": "STRING"
+                },
+                {
+                    "name": "series",
+                    "type": "STRING"
+                },
+                {
+                    "name": "caseImg",
+                    "type": "STRING"
+                },
+                {
+                    "name": "publisher",
+                    "type": "STRING"
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "Super Mario Odyssey",
+                    "10-27-2017",
+                    "Super Mario",
+                    "https:\/\/upload.wikimedia.org\/wikipedia\/en\/8\/8d\/Super_Mario_Odyssey.jpg",
+                    "Nintendo"
+                ],
+                [
+                    2,
+                    "Dead Cells",
+                    "08-07-2018",
+                    null,
+                    "https:\/\/www.mobygames.com\/images\/covers\/l\/498109-dead-cells-xbox-one-front-cover.jpg",
+                    "Motion Twin"
+                ],
+                [
+                    3,
+                    "Fire Emblem: Three Houses",
+                    "06-26-2019",
+                    "Fire Emblem",
+                    "https:\/\/upload.wikimedia.org\/wikipedia\/en\/1\/16\/Fire_Emblem_Three_Houses.jpg",
+                    "Nintendo"
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "games_directors",
+            "withoutRowId": true,
+            "ddl": "CREATE TABLE games_directors (gameId REFERENCES games (gameId) MATCH SIMPLE, directorId REFERENCES directors (directorId) MATCH SIMPLE)",
+            "columns": [
+                {
+                    "name": "gameId",
+                    "type": "",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES games (gameId) MATCH SIMPLE"
+                        }
+                    ]
+                },
+                {
+                    "name": "directorId",
+                    "type": "",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES directors (directorId) MATCH SIMPLE"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    4
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "users",
+            "withoutRowId": true,
+            "ddl": "CREATE TABLE users (userId INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, email STRING UNIQUE, username STRING UNIQUE, password STRING, avatar_url STRING)",
+            "columns": [
+                {
+                    "name": "userId",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT "
+                        },
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "email",
+                    "type": "STRING",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "username",
+                    "type": "STRING",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "password",
+                    "type": "STRING"
+                },
+                {
+                    "name": "avatar_url",
+                    "type": "STRING"
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "jeffrey.david.whitaker@zoho.com",
+                    "jeff",
+                    "jeff",
+                    null
+                ],
+                [
+                    2,
+                    "example@email.com",
+                    "example",
+                    "example",
+                    null
+                ]
+            ]
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "directorsIndex",
+            "unique": false,
+            "ddl": "CREATE INDEX directorsIndex ON games_directors (directorId ASC)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "gamesIndex",
+            "unique": false,
+            "ddl": "CREATE INDEX gamesIndex ON games_directors (gameId ASC)"
+        }
+    ]
+}

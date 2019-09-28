@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 5000;
 const server = express();
 
+const db = require('./data/db-config')
+
 server.use(cors());
 server.use(bodyParser.json());
 
@@ -60,7 +62,30 @@ server.post("/login", (req, res) => {
 // games API
 
 server.get("/gamelist", (req, res) => {
-  res.status(200).json(data.games);
+  /*db('games')
+    .select('*')
+    .then(games => {
+      res.status(200).json(games);
+    })
+    .catch(err => {
+      console.log(err)
+      res.json(err)
+    })*/
+  db('games')
+    .leftJoin('games_directors', 'games.gameId', '=', 'games_directors.gameId')
+    .leftJoin('directors', 'games_directors.directorId', '=', 'directors.directorId')
+    .select([
+      'games.*', 
+      db.raw(`Json_agg(Json_build_object('id', directors.directorId, 'name', directors.name)) AS directors`)
+    ])
+    .groupBy('games.gameId')
+    .then(games => {
+      res.status(200).json(games);
+    })
+    .catch(err => {
+      console.log(err)
+      res.json(err)
+    })
 });
 
 // get list of publishers
