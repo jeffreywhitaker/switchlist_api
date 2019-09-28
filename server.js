@@ -76,7 +76,7 @@ server.get("/gamelist", (req, res) => {
     .leftJoin('directors', 'games_directors.directorId', '=', 'directors.directorId')
     .select([
       'games.*', 
-      db.raw(`Json_agg(Json_build_object('id', directors.directorId, 'name', directors.name)) AS directors`)
+      // db.raw(`Json_agg(Json_build_object('id', directors.directorId, 'name', directors.name)) AS directors`)
     ])
     .groupBy('games.gameId')
     .then(games => {
