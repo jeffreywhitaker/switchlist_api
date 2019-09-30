@@ -1,17 +1,15 @@
 const data = require("./data");
 const cors = require("cors");
 const express = require("express");
-const bodyParser = require("body-parser");
-
-const port = process.env.PORT || 5000;
 const server = express();
 
-const db = require('./data/db-config')
+const GamesRouter = require('./games/games-router.js')
 
 server.use(cors());
-server.use(bodyParser.json());
+server.use(express.json());
 
-let gameId = data.games.length;
+server.use('/api/', GamesRouter)
+
 let userId = data.users.length;
 let token = "dummytoken";
 
@@ -57,35 +55,6 @@ server.post("/login", (req, res) => {
   } else {
     res.status(403).json({ error: "Incorrect password." });
   }
-});
-
-// games API
-
-server.get("/gamelist", (req, res) => {
-  /*db('games')
-    .select('*')
-    .then(games => {
-      res.status(200).json(games);
-    })
-    .catch(err => {
-      console.log(err)
-      res.json(err)
-    })*/
-  db('games')
-    .leftJoin('games_directors', 'games.gameId', '=', 'games_directors.gameId')
-    .leftJoin('directors', 'games_directors.directorId', '=', 'directors.directorId')
-    .select([
-      'games.*', 
-      // db.raw(`Json_agg(Json_build_object('id', directors.directorId, 'name', directors.name)) AS directors`)
-    ])
-    .groupBy('games.gameId')
-    .then(games => {
-      res.status(200).json(games);
-    })
-    .catch(err => {
-      console.log(err)
-      res.json(err)
-    })
 });
 
 // get list of publishers
@@ -147,8 +116,4 @@ server.delete("/users/:id", authenticator, (req, res) => {
   res.status(202).send("User has been deleted.");
 });
 
-// server port
-
-server.listen(port, () => {
-  console.log(`server listening on http://${port}`);
-});
+module.exports = server
