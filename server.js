@@ -2,7 +2,6 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-const protectedSchema = require('./schema/protected-schema')
 const gamesRouter = require('./routes/gamesRouter')
 const bodyParser = require('body-parser')
 const passport = require('passport')
@@ -26,7 +25,7 @@ server.use(bodyParser.json())
 
 // passport middleware
 server.use(passport.initialize())
-require('./config/passport-config.js')(passport)
+require('./config/passportConfig.js')(passport)
 
 // rate limits for the routes
 const authLimiter = rateLimit({
@@ -42,15 +41,12 @@ const backendLimiter = rateLimit({
 
 // routes
 server.use('/auth', authLimiter, [localAuthRoutes])
-server.use(
-  '/protected',
-  backendLimiter,
-  // passport.authenticate('jwt', { session: false }),
-  graphqlHTTP({
-    protectedSchema,
-    graphiql: true,
-  }),
-)
+// server.use(
+//   '/user',
+//   backendLimiter,
+//   // passport.authenticate('jwt', { session: false }),
+//   otherBackend,
+// )
 server.use('/games', backendLimiter, gamesRouter)
 
 module.exports = server

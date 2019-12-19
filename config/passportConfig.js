@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const opts = {}
 const passport = require('passport')
-const { BACKEND_ROOT_DOMAIN } = require('./db-config')
+const { BACKEND_ROOT_DOMAIN } = require('./envConfig')
 
 passport.serializeUser(function(user, done) {
   done(null, user)

@@ -5,7 +5,7 @@ const gameSchema = new Schema({
   title: String,
   releaseDate: String,
   series: String,
-  publisher: String,
+  publisherId: { type: mongoose.Schema.Types.ObjectId, ref: 'Publisher' },
   developer: String,
   directors: [String],
   composers: [String],
