@@ -1,7 +1,11 @@
-const server = require('./server.js')
+require("dotenv").config();
+const DB = require("./models/db-model");
+const server = require("./server.js");
 
 // start server on port
 const port = process.env.PORT || 5000;
-server.listen(port, () => {
+DB.connectDB().then(() => {
+  server.listen(port, () => {
     console.log(`server listening on http://${port}`);
   });
+});
