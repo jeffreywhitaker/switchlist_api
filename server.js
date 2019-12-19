@@ -50,17 +50,17 @@ server.use(
   })
 );
 
-const data = require("./data");
-const cors = require("cors");
-const express = require("express");
-const server = express();
+// const data = require("./data");
+// const cors = require("cors");
+// const express = require("express");
+// const server = express();
 
-const GamesRouter = require("./games/games-router.js");
+// const GamesRouter = require("./games/games-router.js");
 
-server.use(cors());
-server.use(express.json());
+// server.use(cors());
+// server.use(express.json());
 
-server.use("/api/", GamesRouter);
+// server.use("/api/", GamesRouter);
 
 // authenticator function
 
