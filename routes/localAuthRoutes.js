@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 // const validateLoginInput = require('../validation/login-validation');
 
 // Load User model
-const User = require('../models/user-model')
+const User = require('../models/userModel')
 
 // function to help with login, used in both endpoints
 const sendToken = (user, res) => {

@@ -1,5 +1,5 @@
 require('dotenv').config()
-const DB = require('./config/db-config.js')
+const DB = require('./config/envConfig')
 const server = require('./server.js')
 
 // start server on port
