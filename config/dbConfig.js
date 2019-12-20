@@ -4,7 +4,7 @@ const MONGODB_URI = process.env.MONGODB_URI
 
 const connectDB = () => {
   return mongoose.connect(MONGODB_URI, {
-    useUnifiedTopology: true,
+    // useUnifiedTopology: true,
     useNewUrlParser: true,
     useFindAndModify: false,
   })
