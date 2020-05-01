@@ -5,11 +5,50 @@ require('../models/directorModel')
 require('../models/composerModel')
 const Game = require('../models/gameModel')
 
-router.get('/all', (req, res) => {
-  Game.find({})
+// use query params
+const url = require('url')
+
+router.get('/', (req, res) => {
+  // get query params from the url
+  const queryObject = url.parse(req.url, true).query
+  const criteria = {}
+  const pageSize
+  const page
+
+  // handle publisher query
+  if (queryObject['publisher'] !== null) {
+    criteria['publisher'] = queryObject['publisher']
+  }
+
+  // handle title query
+  if (queryObject['title'] !== null) {
+    criteria['title'] = { '$regex': queryObject['title'], '$options': 'i' }
+  }
+
+  // handle multiplayer
+  if (queryObject['multiplayer'] !== null) {
+    criteria['multiplayer'] = { '$regex': queryObject['multiplayer'], '$options': 'i' }
+  }
+
+  // pagination
+  if (queryObject['pageSize'] !== null) {
+    pageSize = queryObject['pageSize']
+  } else {
+    pageSize = 10
+  }
+
+  if (queryObject['page'] !== null) {
+    page = queryObject['page']
+  } else {
+    page = 1
+  }
+
+  Game.find(criteria)
     .populate('publishers')
     .populate('directors')
     .populate('composers')
+    .limit(pageSize + 1)
+    .skip((page - 1) * pageSize)
     .exec((err, games) => {
       if (err) throw err
       console.log('endpoint hit')
