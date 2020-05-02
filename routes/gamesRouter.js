@@ -11,13 +11,14 @@ const url = require('url')
 router.get('/', (req, res) => {
   // get query params from the url
   const queryObject = url.parse(req.url, true).query
+  console.log('query object', queryObject)
   const criteria = {}
   let pageSize = 10
   let page = 1
 
   // handle publisher query
   if (queryObject['publisher'] !== undefined) {
-    criteria['publisher'] = queryObject['publisher']
+    criteria['publishers'] = queryObject['publisher']
   }
 
   // handle title query
@@ -27,25 +28,19 @@ router.get('/', (req, res) => {
 
   // handle multiplayer
   if (queryObject['multiplayer'] !== undefined) {
-    criteria['multiplayer'] = {
-      $regex: queryObject['multiplayer'],
-      $options: 'i',
-    }
+    criteria['multiplayer'] = queryObject['multiplayer']
   }
 
   // pagination
   if (queryObject['pageSize'] !== undefined) {
     pageSize = queryObject['pageSize']
-  } else {
-    pageSize = 10
   }
 
   if (queryObject['page'] !== undefined) {
     page = queryObject['page']
-  } else {
-    page = 1
   }
 
+  console.log('criteria', criteria)
   Game.find(criteria)
     .populate('publishers')
     .populate('directors')
