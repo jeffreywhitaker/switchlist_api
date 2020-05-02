@@ -4,6 +4,8 @@ require('../models/publisherModel')
 require('../models/directorModel')
 require('../models/composerModel')
 const Game = require('../models/gameModel')
+const Publisher = require('../models/publisherModel')
+const Composer = require('../models/composerModel')
 
 // use query params
 const url = require('url')
@@ -17,8 +19,13 @@ router.get('/', (req, res) => {
   let page = 1
 
   // handle publisher query
-  if (queryObject['publisher'] !== undefined) {
-    criteria['publishers'] = queryObject['publisher']
+  if (queryObject['publisherId'] !== undefined) {
+    criteria['publishers'] = queryObject['publisherId']
+  }
+
+  // handle composer query
+  if (queryObject['composerId'] !== undefined) {
+    criteria['composers'] = queryObject['composerId']
   }
 
   // handle title query
@@ -26,9 +33,29 @@ router.get('/', (req, res) => {
     criteria['title'] = { $regex: queryObject['title'], $options: 'i' }
   }
 
+  // handle series query
+  if (queryObject['series'] !== undefined) {
+    criteria['series'] = { $regex: queryObject['series'], $options: 'i' }
+  }
+
+  // handle genre query
+  if (queryObject['genre'] !== undefined) {
+    criteria['genres'] = { $regex: queryObject['genre'], $options: 'i' }
+  }
+
   // handle multiplayer
   if (queryObject['multiplayer'] !== undefined) {
     criteria['multiplayer'] = queryObject['multiplayer']
+  }
+
+  // handle hd rumble
+  if (queryObject['hdRumble'] !== undefined) {
+    criteria['hdRumble'] = queryObject['hdRumble']
+  }
+
+  // handle cloudsaves
+  if (queryObject['cloudSaves'] !== undefined) {
+    criteria['cloudSaves'] = queryObject['cloudSaves']
   }
 
   // pagination
@@ -63,6 +90,18 @@ router.get('/id/:id', (req, res) => {
       if (err) throw err
       res.status(200).json(game)
     })
+})
+
+router.get('/datalist', async (req, res) => {
+  responseObj = {}
+
+  const publishers = await Publisher.find({}).exec()
+  responseObj['publishers'] = publishers
+
+  const composers = await Composer.find({}).exec()
+  responseObj['composers'] = composers
+
+  res.status(200).json(responseObj)
 })
 
 module.exports = router
