@@ -16,28 +16,28 @@ router.get('/', (req, res) => {
   const page
 
   // handle publisher query
-  if (queryObject['publisher'] !== null) {
+  if (queryObject['publisher'] !== undefined) {
     criteria['publisher'] = queryObject['publisher']
   }
 
   // handle title query
-  if (queryObject['title'] !== null) {
+  if (queryObject['title'] !== undefined) {
     criteria['title'] = { '$regex': queryObject['title'], '$options': 'i' }
   }
 
   // handle multiplayer
-  if (queryObject['multiplayer'] !== null) {
+  if (queryObject['multiplayer'] !== undefined) {
     criteria['multiplayer'] = { '$regex': queryObject['multiplayer'], '$options': 'i' }
   }
 
   // pagination
-  if (queryObject['pageSize'] !== null) {
+  if (queryObject['pageSize'] !== undefined) {
     pageSize = queryObject['pageSize']
   } else {
     pageSize = 10
   }
 
-  if (queryObject['page'] !== null) {
+  if (queryObject['page'] !== undefined) {
     page = queryObject['page']
   } else {
     page = 1
