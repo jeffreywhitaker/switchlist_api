@@ -12,8 +12,8 @@ router.get('/', (req, res) => {
   // get query params from the url
   const queryObject = url.parse(req.url, true).query
   const criteria = {}
-  const pageSize
-  const page
+  let pageSize = 10
+  let page = 1
 
   // handle publisher query
   if (queryObject['publisher'] !== undefined) {
@@ -22,12 +22,15 @@ router.get('/', (req, res) => {
 
   // handle title query
   if (queryObject['title'] !== undefined) {
-    criteria['title'] = { '$regex': queryObject['title'], '$options': 'i' }
+    criteria['title'] = { $regex: queryObject['title'], $options: 'i' }
   }
 
   // handle multiplayer
   if (queryObject['multiplayer'] !== undefined) {
-    criteria['multiplayer'] = { '$regex': queryObject['multiplayer'], '$options': 'i' }
+    criteria['multiplayer'] = {
+      $regex: queryObject['multiplayer'],
+      $options: 'i',
+    }
   }
 
   // pagination
